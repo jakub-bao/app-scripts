@@ -1,6 +1,7 @@
 import {runInModule} from "./runInModule.service.js";
 import {readdirSync} from "node:fs";
-import {log} from "./log.service.js";
+import {log} from "../log.service.js";
+import chalk from "chalk";
 
 const modules:string[] = readdirSync('.', {withFileTypes: true})
     .filter(listing=>listing.isDirectory())
@@ -10,14 +11,17 @@ const modules:string[] = readdirSync('.', {withFileTypes: true})
         return readdirSync(dir).includes('package.json')
     })
 
-log.info(`List of detected application modules:`, modules.join(', '));
+log.info(`Detected modules:`, modules.map((m)=>chalk.bold(m)).join(', '));
 
-export function runInModulesParallel(command:string):Promise<void[]>{
+export async function runInModulesParallel(command:string):Promise<void>{
+    log.info(`🔀 Starting in parallel`)
     const promises:Promise<void>[] = modules.map((module)=>runInModule(module, command))
-    return Promise.all(promises)
+    await Promise.all(promises)
+    log.info(`⏹️ Finishing parallel execution`)
 }
 
 export async function runInModulesSeries(command:string):Promise<void>{
+    log.info(`⏬  Starting in series`);
     for (const module of modules){
         await runInModule(module, command)
     }
