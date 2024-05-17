@@ -15,14 +15,13 @@ function getIcon(sectionCount:number):string{
 }
 
 function section(name:string){
-    console.log('\n')
     console.log(line)
     console.log(getIcon(sectionCount), chalk.bold.green(name))
     sectionCount++
 }
 
 function starting(module:string, command: string): void {
-    console.log('▶️ ', chalk.blueBright('Starting'),chalk.bold(module),'>',chalk.blueBright(command))
+    console.log('▶️', chalk.blueBright('Starting command in'),chalk.bold(module),'>',chalk.blueBright(command))
 }
 
 function stdout(module:string, command:string, message:string): void {
@@ -31,15 +30,15 @@ function stdout(module:string, command:string, message:string): void {
 }
 
 function success(module:string, command:string):void{
-    console.log('✅', chalk.blueBright('Finished'),chalk.bold(module),'>',chalk.blueBright(command))
+    console.log('✅ ', chalk.blueBright('Finished command in'), chalk.bold(module),'>',chalk.blueBright(command))
 }
 
 function error(module:string, command:string, message:string):void{
     console.log('\t','‼️',chalk.red('stderr'), chalk.bold(module),'>',chalk.blueBright(command), chalk.yellow(message.trim()))
 }
 
-function info(message:string):void{
-    console.log(message)
+function info(...messages:string[]):void{
+    console.log('info', chalk.blue(...messages))
 }
 
 export const log = {

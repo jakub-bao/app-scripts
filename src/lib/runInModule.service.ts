@@ -1,14 +1,6 @@
 import {spawn} from "child_process";
 import {log} from "./log.service.js";
 
-export const modules = [
-    'pdapService',
-    'partnerView',
-    'agencyView',
-    'menu',
-    'main'
-]
-
 export function runInModule(module:string, command:string):Promise<void>{
     log.starting(module, command)
     const program:string = command.split(' ')[0]
@@ -30,15 +22,4 @@ export function runInModule(module:string, command:string):Promise<void>{
             resolve()
         });
     })
-}
-
-export function runInModulesParallel(command:string):Promise<void[]>{
-    const promises:Promise<void>[] = modules.map((module)=>runInModule(module, command))
-    return Promise.all(promises)
-}
-
-export async function runInModulesSeries(command:string):Promise<void>{
-    for (const module of modules){
-        await runInModule(module, command)
-    }
 }
