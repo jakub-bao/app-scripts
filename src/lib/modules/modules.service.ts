@@ -3,13 +3,15 @@ import {readdirSync} from "node:fs";
 import {log} from "../log.service.js";
 import chalk from "chalk";
 
-const modules:string[] = readdirSync('.', {withFileTypes: true})
+const modules:string[] = readdirSync('..', {withFileTypes: true})
     .filter(listing=>listing.isDirectory())
     .map(({name})=>name)
     .filter(name=>name!=='scripts')
     .filter((dir)=>{
-        return readdirSync(dir).includes('package.json')
+        return readdirSync('../'+dir).includes('package.json')
     })
+
+if (modules.length>0) throw new Error(`No modules detected`)
 
 log.info(`Detected modules:`, modules.map((m)=>chalk.bold(m)).join(', '));
 

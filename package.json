@@ -2,7 +2,7 @@
   "name": "scripts",
   "version": "0.0.1",
   "scripts": {
-    "script": "tsc && node dist/utils/dispatch.util.js"
+    "script": "rm -r dist && tsc && node dist/utils/dispatch.util.js"
   },
   "dependencies": {
     "typescript": "^5.4.5",

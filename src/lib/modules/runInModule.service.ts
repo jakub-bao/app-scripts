@@ -7,7 +7,7 @@ export function runInModule(module:string, command:string):Promise<void>{
     const args:string[] = command.split(' ').slice(1, Infinity)
     const task = spawn(program, args, {cwd: process.cwd()+`/${module}`})
     task.stdout.on('data', (data) => {
-        moduleLog.stdout(module, command, data.toString());
+        moduleLog.stdout(module, command, data.toString())
     });
     task.stderr.on('data', (data) => {
         moduleLog.error(module, command, data.toString())
