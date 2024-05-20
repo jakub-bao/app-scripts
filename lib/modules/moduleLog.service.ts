@@ -1,27 +1,44 @@
 import chalk from "chalk";
 
+const {
+    bold,
+    bgBlack,
+
+    red,
+    yellow,
+    blue,
+    blueBright,
+    grey,
+
+} = chalk
+
+function formatCommand(module:string, command:string):string{
+    return `${bgBlack(`| ▶ ${command.replace(/ --.+$/,'')} |`)} ${blueBright('in')} ${bold(module)}`
+}
 
 function start(module:string, command: string): void {
-    console.log('▶️', chalk.blueBright('Starting'), chalk.bgBlack(` ▶ ${command} `), chalk.blueBright('in'), chalk.bold(module))
+    console.log('▶️', blueBright('Starting'), formatCommand(module, command))
 }
 
 function finish(module:string, command:string):void{
-    console.log('✅ ', chalk.blueBright('Finished'), chalk.bgBlack(` ▶ ${command} `), chalk.blueBright('in'), chalk.bold(module))
+    console.log('✅', blueBright('Finished'), formatCommand(module, command))
 }
 
 let lastMessage:string
 
 function stdout(module:string, command:string, message:string): void {
     if (!message || message.length===0) return
-    if (lastMessage!==`${module}${command}`) console.log('stdio', chalk.bold(module), chalk.grey(command))
+    if (lastMessage!==`${module}${command}`) console.log(bold('stdio'), formatCommand(module, command))
     lastMessage = `${module}${command}`
-    console.log(chalk.blue(message.trim()))
+    console.log(grey(message.trim()))
 }
 
 function error(module:string, command:string, message:string):void{
-    console.log('\t','‼️',chalk.red('stderr'), chalk.bold(module),'>',chalk.blueBright(command), chalk.yellow(message.trim()))
+    if (!message || message.length===0) return
+    if (lastMessage!==`error${module}${command}`) console.log('‼️',red('stderr'), formatCommand(module, command))
+    lastMessage = `error${module}${command}`
+    console.log(red(message.trim()))
 }
-
 
 export const moduleLog = {
     start,
