@@ -18,8 +18,10 @@ async function upload(hostname: string, auth:string):Promise<void>{
         headers: {
             Authorization: `Basic ${auth}`
         }
+    }).catch((err)=>{
+        throw new Error(err)
     })
-    log.info(response.data.toString())
+    log.info(`response status ${response.status}`)
 }
 
 log.section(`Reading server settings`)
@@ -27,4 +29,4 @@ log.info(`Deploying app to ${hostname} as ${username}`)
 
 log.section(`Uploading to server`)
 await upload(hostname, auth)
-log.info(`Upload successful`)
+log.success(`Upload successful`)
