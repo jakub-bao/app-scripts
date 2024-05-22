@@ -1,43 +1,63 @@
 import chalk from "chalk";
 
 const {
+    white,
     bold,
     bgBlack,
-
     red,
-    yellow,
-    blue,
     blueBright,
     grey,
-
 } = chalk
 
+const strong = white.bold
+const blue = blueBright
+const code = bgBlack.white
+
+declare global {
+    interface String {
+        format: ()=>string
+    }
+}
+
+String.prototype.format = function (){
+    return this
+        .replace(/<i>(.+?)<\/i>/g, blue('$1'))
+        .replace(/<b>(.+?)<\/b>/g, strong('$1'))
+        .replace(/<code>(.+?)<\/code>/g, code('| ▶ $1 |'))
+}
+
+function log(...parts:string[]):void{
+    console.log(...parts.map(p=>p.format()))
+}
+
 function formatCommand(module:string, command:string):string{
-    return `${bgBlack(`| ▶ ${command.replace(/ --.+$/,'')} |`)} ${blueBright('in')} ${bold(module)}`
+    const readableCommand = command.replace(/ --.+$/,'')
+    return `<code>${readableCommand}</code> <i>in</i> <b>${module}</b>`
 }
 
 function start(module:string, command: string): void {
-    console.log('▶️', blueBright('Starting'), formatCommand(module, command))
+    log(`▶️ <i>Starting</i> ${formatCommand(module, command)}`)
 }
 
 function finish(module:string, command:string):void{
-    console.log('✅', blueBright('Finished'), formatCommand(module, command))
+    log(`✅  <i>Finished</i> ${formatCommand(module, command)}`)
 }
 
 let lastMessage:string
 
 function stdout(module:string, command:string, message:string): void {
     if (!message || message.length===0) return
-    if (lastMessage!==`${module}${command}`) console.log(bold('stdio'), formatCommand(module, command))
+    if (lastMessage!==`${module}${command}`) log(`<b>stdio</b> ${formatCommand(module, command)}`)
     lastMessage = `${module}${command}`
-    console.log(grey(message.trim()))
+    log(grey(message.trim()))
 }
 
 function error(module:string, command:string, message:string):void{
     if (!message || message.length===0) return
-    if (lastMessage!==`error${module}${command}`) console.log('‼️',red('stderr'), formatCommand(module, command))
+    if (message.startsWith('To github.com')) return stdout(module, command, message)
+    if (lastMessage!==`error${module}${command}`) log('‼️',red('stderr'), formatCommand(module, command))
     lastMessage = `error${module}${command}`
-    console.log(red(message.trim()))
+    log(red(message.trim()))
 }
 
 export const moduleLog = {

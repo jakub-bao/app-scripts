@@ -29,4 +29,4 @@ log.info(`Deploying app to ${hostname} as ${username}`)
 
 log.section(`Uploading to server`)
 await upload(hostname, auth)
-log.success(`Upload successful`)
+log.finished(`Upload successful`)

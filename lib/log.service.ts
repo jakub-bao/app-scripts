@@ -24,12 +24,12 @@ function info(...messages:string[]):void{
     console.log('📢', chalk.bold.blue('info'), ...messages)
 }
 
-function success(...messages:string[]):void{
-    console.log('🏁', chalk.bold.green('success'), ...messages)
+function finished(...messages:string[]):void{
+    console.log('🏁', chalk.bold.green('Script finished'), ...messages)
 }
 
 export const log = {
     section,
     info,
-    success
+    finished
 }
