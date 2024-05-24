@@ -7,5 +7,4 @@ if (action==='menu') path = 'scripts/dist/shared/utils/menu.util.js'
 path = `scripts/dist/shared/scripts/${action}.script.js`
 if (!existsSync(path)) path = `scripts/dist/local/scripts/${action}.script.js`
 if (!existsSync(path)) throw new Error(`${chalk.red('Cannot find a script named')} ${chalk.bold(action+'.script.js')}.\nChecked paths:\nscripts/dist/shared/scripts\nscripts/dist/local/scripts`)
-console.log('debug1', process.argv)
-fork(path, process.argv.slice(3))
+fork(path, process.argv.slice(3)).on('exit', process.exit)

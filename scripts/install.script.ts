@@ -6,7 +6,6 @@
 import {log} from "../lib/log.service.js";
 import {runInModulesParallel, runInModulesSeries, setModules} from "../lib/modules/modules.service.js";
 
-console.log('debug2', process.argv)
 if (process.argv.slice(2).length>0) setModules(process.argv.slice(2))
 
 log.section(`NPM Install in modules`)
