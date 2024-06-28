@@ -40,7 +40,7 @@ function start(module:string, command: string): void {
 }
 
 function finish(module:string, command:string):void{
-    log(`✅  <i>Finished</i> ${formatCommand(module, command)}`)
+    log(`✅<i>Finished</i> ${formatCommand(module, command)}`)
 }
 
 let lastMessage:string
